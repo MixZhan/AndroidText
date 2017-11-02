@@ -5,4 +5,26 @@ account 账目
 summary 摘要
 issues 议题
 profile 轮廓
+glide 滑行
+fresco 壁画
+fluent 流畅的
+
+
 https://desktop.github.com/  github for windows
+
+
+
+face
+https://mp.weixin.qq.com/s/l1UkDjGM4i_yWNxWdWxo2A
+
+有哪些好看的 Hexo 主题？
+https://www.zhihu.com/question/24422335
+
+HEXO+Github,搭建属于自己的博客
+http://www.jianshu.com/p/465830080ea9
+
+自定义控件 | 仿《最美有物》点赞效果
+http://blog.csdn.net/Simon_Crystin/article/details/78332452
+
+今年最新的30个Android库，你了解吗？
+https://www.evget.com/article/2017/10/20/27071.html
