@@ -1,3 +1,16 @@
 
 1.创建一个继承SQLiteOpenHelper的类，并重写onCreate()和onUpgrade()方法。
-  
+  1.1 SQLiteOpenHelper没有无参构造方法，子类须重写构造方法。
+      构造方法中指定db名和db版本号。
+      构造方法单例:
+      public static DataBaseHelper getInstance(Context context) {
+        if (dataBaseHelper == null) {
+            synchronized (DataBaseHelper.class) {
+                if (dataBaseHelper == null)
+                    dataBaseHelper = new DataBaseHelper(context);
+            }
+        }
+        return dataBaseHelper;
+      }
+  1.2 onCreate()和onUpgrade()方法为abstract方法，须重写。
+      
