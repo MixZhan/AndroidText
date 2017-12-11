@@ -13,4 +13,32 @@
         return dataBaseHelper;
       }
   1.2 onCreate()和onUpgrade()方法为abstract方法，须重写。
-      
+2.通过SQLiteOpenHelper子类的对象，获得SQLiteDatabase对象。
+  SQLiteDatabase database = dataBaseHelper.getReadableDatabase();
+3.数据库操作(增删改查)
+  1.执行操作前db.beginTransaction();
+    执行操作后db.setTransactionSuccessful();
+  2.增加
+    2.1 db.execSQL("insert into " + OrderDBHelper.TABLE_NAME + " (Id, CustomName, OrderPrice, Country) values (1, 'Arc', 100, 'China')");
+    2.2 ContentValues contentValues = new ContentValues();
+        contentValues.put("Id", 7);
+        contentValues.put("CustomName", "Jne");
+        contentValues.put("OrderPrice", 700);
+        contentValues.put("Country", "China");
+        db.insertOrThrow(OrderDBHelper.TABLE_NAME, null, contentValues);
+  3.删除
+    db.delete(OrderDBHelper.TABLE_NAME, "Id = ?", new String[]{String.valueOf(7)});
+  4.修改
+    ContentValues cv = new ContentValues();
+    cv.put("OrderPrice", 800);
+    db.update(OrderDBHelper.TABLE_NAME, cv, "Id = ?", new String[]{String.valueOf(6)});
+  5.查找
+    5.1 public Cursor rawQuery(String sql, String[] selectionArgs)
+    5.2 public Cursor query(String table,String[] columns,String selection,String[] selectionArgs,String groupBy,String having,String orderBy,String limit);
+        groupBy:分组列
+        having:分组条件
+        orderBy:排序列
+        limit:分页查询限制
+
+
+
