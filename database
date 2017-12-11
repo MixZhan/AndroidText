@@ -16,29 +16,46 @@
 2.通过SQLiteOpenHelper子类的对象，获得SQLiteDatabase对象。
   SQLiteDatabase database = dataBaseHelper.getReadableDatabase();
 3.数据库操作(增删改查)
-  1.执行操作前db.beginTransaction();
-    执行操作后db.setTransactionSuccessful();
-  2.增加
-    2.1 db.execSQL("insert into " + OrderDBHelper.TABLE_NAME + " (Id, CustomName, OrderPrice, Country) values (1, 'Arc', 100, 'China')");
-    2.2 ContentValues contentValues = new ContentValues();
-        contentValues.put("Id", 7);
-        contentValues.put("CustomName", "Jne");
-        contentValues.put("OrderPrice", 700);
-        contentValues.put("Country", "China");
-        db.insertOrThrow(OrderDBHelper.TABLE_NAME, null, contentValues);
-  3.删除
-    db.delete(OrderDBHelper.TABLE_NAME, "Id = ?", new String[]{String.valueOf(7)});
-  4.修改
-    ContentValues cv = new ContentValues();
-    cv.put("OrderPrice", 800);
-    db.update(OrderDBHelper.TABLE_NAME, cv, "Id = ?", new String[]{String.valueOf(6)});
-  5.查找
-    5.1 public Cursor rawQuery(String sql, String[] selectionArgs)
-    5.2 public Cursor query(String table,String[] columns,String selection,String[] selectionArgs,String groupBy,String having,String orderBy,String limit);
-        groupBy:分组列
-        having:分组条件
-        orderBy:排序列
-        limit:分页查询限制
+  3.1 执行操作前db.beginTransaction();
+      执行操作后db.setTransactionSuccessful();db.close();
+  3.2 增加
+    3.2.1 db.execSQL("insert into " + OrderDBHelper.TABLE_NAME + " (Id, CustomName, OrderPrice, Country) values (1, 'Arc', 100, 'China')");
+    3.2.2 ContentValues contentValues = new ContentValues();
+          contentValues.put("Id", 7);
+          contentValues.put("CustomName", "Jne");
+          contentValues.put("OrderPrice", 700);
+          contentValues.put("Country", "China");
+          db.insertOrThrow(OrderDBHelper.TABLE_NAME, null, contentValues);
+  3.3 删除
+      db.delete(OrderDBHelper.TABLE_NAME, "Id = ?", new String[]{String.valueOf(7)});
+  3.4 修改
+      ContentValues cv = new ContentValues();
+      cv.put("OrderPrice", 800);
+      db.update(OrderDBHelper.TABLE_NAME, cv, "Id = ?", new String[]{String.valueOf(6)});
+  3.5 查找
+      3.5.1 public Cursor rawQuery(String sql, String[] selectionArgs)
+      3.5.2 public Cursor query(String table,String[] columns,String selection,String[] selectionArgs,String groupBy,String having,String orderBy,String limit);
+            groupBy:分组列
+            having:分组条件
+            orderBy:排序列
+            limit:分页查询限制
+4.其他
+  4.1 另一种获得SQLiteDatabase对象的方式
+      SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(path, null);
+      SQLiteOpenHelper的getReadableDatabase()方法内会调用openOrCreateDatabase()方法。
+  4.2 直接使用SqliteDatabase的execSQL(String sql)有可能会导致注入攻击，比如
+      delete from user where name='a';
+      有可能就变成
+      delete from user where name='a' or 1=1;
+
+
+
+
+
+
+
+
+
 
 
 
