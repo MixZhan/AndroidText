@@ -9,10 +9,11 @@ glide 滑行
 fresco 壁画
 fluent 流畅的
 
-fetch  拿取
+fetch  取得
 hierarchy  层次
 navigate  导航
 structure  构造
 symbol  标志
 documentation  文件
 definition  定义
+Transaction  事务
