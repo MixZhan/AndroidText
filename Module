@@ -1,0 +1,38 @@
+
+
+1.组件化的好处
+    1.加快业务迭代速度，各个业务模块组件更加独立，不再出现业务耦合情况； 
+    2.稳定的公共模块采用依赖库方式，提供给各个业务线使用，减少重复开发和维护工作量； 
+    3.迭代频繁的业务模块采用组件方式，各业务研发可以互不干扰、提升协作效率，并控制产品质量； 
+    4.为新业务随时集成提供了基础，所有业务可上可下，灵活多变； 
+    5.降低团队成员熟悉项目的成本，降低项目的维护难度； 
+    6.加快编译速度，提高开发效率； 
+    7.控制代码权限，将代码的权限细分到更小的粒度；
+
+2.集成模式与组件模式的切换
+    Android Studio中的Module主要有两种属性，分别为：
+        1.application属性，可以独立运行的Android程序，也就是我们的APP。apply plugin: ‘com.android.application’
+        2.library属性，不可以独立运行，一般是Android程序依赖的库文件。apply plugin: ‘com.android.library’
+    Module的属性在每个组件的build.gradle文件中配置。
+    当我们在组件模式开发时，业务组件应处于application属性，这时的业务组件就是一个Android App，可以独立开发和调试；
+    当我们转换到集成模式开发时，业务组件应该处于library属性，这样才能被我们的“app壳工程”所依赖，组成一个具有完整功能的APP；
+    
+    读取配置文件一键切换所有组件的Module属性
+    Gradle自动构建工具有一个重要属性，可以帮助我们完成这个事情。
+    每当我们用AndroidStudio创建一个Android项目后，就会在项目的根目录中生成一个文件gradle.properties，我们将使用这个文件的一个重要属性：
+    在Android项目中的任何一个build.gradle文件中都可以把gradle.properties中的常量读取出来。
+    首先我们在gradle.properties中定义一个常量值isModule（是否是组件开发模式，true为是，false为否）：
+        # 每次更改“isModule”的值后，需要点击 "Sync Project" 按钮
+        isModule=false
+    gradle.properties 中的数据类型都是String类型，使用其他数据类型需要自行转换。
+        if (isModule.toBoolean()) {
+            apply plugin: 'com.android.application'
+        } else {
+            apply plugin: 'com.android.library'
+        }
+
+
+
+
+
+http://blog.csdn.net/guiying712/article/details/55213884
