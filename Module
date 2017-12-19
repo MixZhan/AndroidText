@@ -31,8 +31,65 @@
             apply plugin: 'com.android.library'
         }
 
+3.组件的AndroidManifest处理
+    在AndroidStudio中每一个组件都会有对应的AndroidManifest.xml，用于声明需要的权限、Application、Activity、Service、Broadcast等，
+当项目处于组件模式时，业务组件的AndroidManifest.xml应该具有一个Android APP所具有的的所有属性，尤其是声明Application和要launch的Activity。
+当项目处于集成模式时，每一个业务组件的AndroidManifest.xml都要合并到“app壳工程”中，要是每一个业务组件都有自己的Application和launch的Activity，
+那么合并的时候肯定会冲突，试想一个APP怎么可能会有多个Application和launch的Activity呢？
+    我们可以为组件开发模式下的业务组件再创建一个AndroidManifest.xml，然后根据isModule指定AndroidManifest.xml的文件路径，
+让业务组件在集成模式和组件模式下使用不同的AndroidManifest.xml，这样表单冲突的问题就可以规避了。
+    sourceSets {
+        main {
+            if (isModule.toBoolean()) {
+                manifest.srcFile 'src/main/module/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
+        }
+    }
+    
+集成开发模式下业务组件的AndroidManifest.xml：
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.guiying.girls">
 
+        <application android:theme="@style/AppTheme">
+            <activity
+                android:name=".main.GirlsActivity"
+                android:screenOrientation="portrait" />
+            <activity
+                android:name=".girl.GirlActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar" />
+        </application>
+    </manifest>
+我在这个表单中只声明了应用的主题，而且这个主题还是跟app壳工程中的主题是一致的，都引用了common组件中的资源文件，
+在这里声明主题是为了方便这个业务组件中有使用默认主题的Activity时就不用再给Activity单独声明theme了。
 
+组件开发模式下业务组件的AndroidManifest.xml：
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.guiying.girls">
+        <application
+            android:name="debug.GirlsApplication"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/girls_name"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+            <activity
+                android:name=".main.GirlsActivity"
+                android:screenOrientation="portrait">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
 
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+            <activity
+                android:name=".girl.GirlActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar" />
+        </application>
+    </manifest>
 
-http://blog.csdn.net/guiying712/article/details/55213884
+4.
+
