@@ -1,0 +1,138 @@
+
+
+    ***新旧权限管理策略***
+    如果App运行在Android5.1(API level 22)或者更低级别的设备中，或者targetSdkVersion<=22时（此时设备可以是Android6.0(API level 23)或者更高），
+在所有系统中仍将采用旧的权限管理策略，系统会要求用户在安装的时候授予权限。否则会采用新的权限管理策略。
+    在新的权限管理策略中，如果你直接调用需要权限的功能而没有去申请权限的话，将会导致App崩溃。
+ 
+ 
+    ***权限分类***
+    Normal PNermissions
+    只需要在Androidmanifest.xml中声明相应的权限，安装即授权。用户不能取消以上授权，除非用户卸载App。
+    Dangerous Permissions
+    需要运行时申请的权限。
+    此类权限也必须在Manifest中申明，否则申请时不提示用户，直接回调开发者权限被拒绝。
+    同一个权限组的任何一个权限被授权了，这个权限组的其他权限也自动被授权。
+    Dangerous Permissions包含以下权限组:
+    CALENDAR（日历） 
+        READ_CALENDAR
+        WRITE_CALENDAR
+    CAMERA（相机） 
+        CAMERA
+    CONTACTS（联系人） 
+        READ_CONTACTS
+        WRITE_CONTACTS
+        GET_ACCOUNTS
+    LOCATION（位置） 
+        ACCESS_FINE_LOCATION
+        ACCESS_COARSE_LOCATION
+    MICROPHONE（麦克风） 
+        RECORD_AUDIO
+    PHONE（手机） 
+        READ_PHONE_STATE
+        CALL_PHONE
+        READ_CALL_LOG
+        WRITE_CALL_LOG
+        ADD_VOICEMAIL
+        USE_SIP
+        PROCESS_OUTGOING_CALLS
+    SENSORS（传感器） 
+        BODY_SENSORS
+    SMS（短信） 
+        SEND_SMS
+        RECEIVE_SMS
+        READ_SMS
+        RECEIVE_WAP_PUSH
+        RECEIVE_MMS
+    STORAGE（存储卡） 
+        READ_EXTERNAL_STORAGE
+        WRITE_EXTERNAL_STORAGE
+   
+   
+    ***几个重要的常量与方法***
+    PackageManager.PERMISSION_DENIED：该权限是被拒绝的。
+    PackageManager.PERMISSION_GRANTED：该权限是被授权的。
+    
+    int checkSelfPermission(String)
+    void requestPermissions(int, String...)
+    boolean shouldShowRequestPermissionRationale(String)
+    void onRequestPermissionsResult()
+    前三个方法在support-v4的ActivityCompat中都有，建议使用兼容库中的方法。
+    
+    int checkSelfPermission(String)
+    检查权限是否授权
+    if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS)
+            != PackageManager.PERMISSION_GRANTED) {
+        // 没有权限，申请权限。
+    }else{
+        // 有权限了，去放肆吧。
+    }
+    
+    void requestPermissions(int, String...)
+    申请权限
+    方法参数:
+    int requestCode，会在回调onRequestPermissionsResult()时返回，用来判断是哪个授权申请的回调。
+    String[] permissions，权限数组，你需要申请的的权限的数组。
+    对于Activity我们直接调用requestPermissions(int, String[])即可，不过这个方法是在api leve 23以上，所以我们为了适配可以是使用兼容包提供的方法：
+    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_CONTACTS}, MMM);
+    对于support包的Fragment就可以直接调用requestPermissions(int, String[])，对于app包的Fragment就需要做版本判断了，这样就显得比较麻烦。
+    
+    void onRequestPermissionsResult()请求权限结果的回调方法
+    方法参数:
+    int requestCode，在调用requestPermissions()时的第一个参数。
+    String[] permissions，权限数组，在调用requestPermissions()时的第二个参数。
+    int[] grantResults，授权结果数组，对应permissions，具体值和上方提到的PackageManager中的两个常量做比较。
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MMM: {
+                if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 权限被用户同意，可以去放肆了。
+                } else {
+                    // 权限被用户拒绝了，洗洗睡吧。
+                }
+                return;
+            }
+        }
+    }
+
+    boolean shouldShowRequestPermissionRationale(String)
+    是否应该显示请求权限原理。
+    用户在第一次拒绝某个权限后，下次再次申请时，授权的dialog中将会出现“不再提醒”选项，一旦选中勾选了，那么下次申请将不会提示用户。
+    第一次请求权限用户拒绝后，调用shouldShowRequestPermissionRationale()后返回true，应该显示一些为什么需要这个权限的说明。其他情况返回false。
+    
+    
+    ***示例***
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        // 没有权限。
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
+            // 用户拒绝过这个权限了，应该提示用户，为什么需要这个权限。
+        } else {
+            // 申请授权。
+            ActivityCompat.requestPermissions(thisActivity, new String[]{Manifest.permission.READ_CONTACTS}, MMM);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MMM: {
+                if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 权限被用户同意，可以去放肆了。
+                } else {
+                    // 权限被用户拒绝了，洗洗睡吧。
+                }
+                return;
+            }
+        }
+    }
+
+
+
+
+
+
+    
+    
+    
