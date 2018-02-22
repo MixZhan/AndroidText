@@ -1,5 +1,11 @@
 
-
+View：View的绘制流程、事件分发。
+线程：多线程、线程池、Handler、AsyncTask原理、异步等。
+网络：Http、Socket、XMPP、MQTT。
+性能：界面的流畅、内存溢出、内存泄漏。
+数据结构：建议专门买一本书看。
+设计模式：找一个好的教程、大约半天时间就能学完。
+附加：JNI、热修复、增量更新、混合开发。
 
 https://desktop.github.com/  github for windows
 
