@@ -1,13 +1,13 @@
 
 
     ***新旧权限管理策略***
-    如果App运行在Android5.1(API level 22)或者更低级别的设备中，或者targetSdkVersion<=22时（此时设备可以是Android6.0(API level 23)或者更高），
+    如果App运行在Android6.0(API level 23)以下的设备中，或者targetSdkVersion<23时（此时设备可以是Android6.0(API level 23)或者更高），
 在所有系统中仍将采用旧的权限管理策略，系统会要求用户在安装的时候授予权限。否则会采用新的权限管理策略。
     在新的权限管理策略中，如果你直接调用需要权限的功能而没有去申请权限的话，将会导致App崩溃。
  
  
     ***权限分类***
-    Normal PNermissions
+    Normal Permissions
     只需要在Androidmanifest.xml中声明相应的权限，安装即授权。用户不能取消以上授权，除非用户卸载App。
     Dangerous Permissions
     需要运行时申请的权限。
@@ -151,9 +151,9 @@
    if(AndPermission(context, permission1, permission2)) {
        // 执行操作。
    }
-    部分中国厂商生产手机（例如vivo、pppo某型号）在用户允许权限，并且回调了权限授权陈功的方法，但是实际执行代码时并没有这个权限，
+    部分中国厂商生产手机（例如vivo、pppo某型号）在用户已授权权限，并且回调了权限授权成功的方法，但是实际执行代码时并没有这个权限，
 建议开发者在回调成功的方法中也利用AppOpsManager判断下。
-    部分开发者反馈，在某些手机的Setting中授权后实际，检查时还是没有权限，部分执行代码也是没有权限，这种手机真的兼容不到了，
+    部分开发者反馈，在某些手机的Setting中授权后，实际检查时还是没有权限，部分执行代码也是没有权限，这种手机真的兼容不到了，
 我也觉得没必要兼容了，建议直接放弃这种平台。
     
     
