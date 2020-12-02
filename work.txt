@@ -1,5 +1,5 @@
 
-View：View的绘制流程、事件分发123。
+View：View的绘制流程、事件分发123456。
 线程：多线程、线程池、Handler、AsyncTask原理、异步等。
 网络：Http、Socket、XMPP、MQTT。
 性能：界面的流畅、内存溢出、内存泄漏。
